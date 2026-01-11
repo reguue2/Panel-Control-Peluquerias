@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="PeluGestor.Views.ReservasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel Margin="10">
+
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="Peluqueria:" VerticalAlignment="Center"/>
+            <ComboBox x:Name="CmbPeluqueria"
+                      Width="260"
+                      Margin="6,0"
+                      DisplayMemberPath="Nombre"
+                      SelectedValuePath="Id"
+                      SelectionChanged="CmbPeluqueria_SelectionChanged"/>
+
+            <TextBlock Text="Fecha:" Margin="12,0,6,0" VerticalAlignment="Center"/>
+            <DatePicker x:Name="DpFecha" SelectedDateChanged="DpFecha_SelectedDateChanged"/>
+
+            <TextBlock Text="Estado:" Margin="12,0,6,0" VerticalAlignment="Center"/>
+            <ComboBox x:Name="CmbEstado" Width="140" SelectionChanged="CmbEstado_SelectionChanged">
+                <ComboBoxItem Content="Todos" IsSelected="True"/>
+                <ComboBoxItem Content="confirmada"/>
+                <ComboBoxItem Content="cancelada"/>
+            </ComboBox>
+
+            <Button Content="Nueva" Width="110" Margin="12,0,0,0" Click="btnNueva"/>
+            <Button Content="Editar" Width="110" Margin="6,0,0,0" Click="btnEditar"/>
+            <Button Content="Cancelar" Width="110" Margin="6,0,0,0" Click="btnEliminar"/>
+        </StackPanel>
+
+        <DataGrid x:Name="Grid"
+                  Margin="0,10,0,0"
+                  AutoGenerateColumns="True"
+                  AutoGeneratingColumn="QuitarColumnas"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"/>
+    </DockPanel>
+</UserControl>
