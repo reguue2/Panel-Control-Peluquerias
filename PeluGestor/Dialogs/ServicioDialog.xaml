@@ -7,31 +7,61 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
-    <Grid Margin="12"
-          RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-          ColumnDefinitions="160,*">
+    <Grid Margin="12">
 
-        <TextBlock Text="Nombre:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Nombre:"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"/>
+
         <TextBox x:Name="TxtNombre"
                  Grid.Row="0"
                  Grid.Column="1"
                  MaxLength="100"/>
 
-        <TextBlock Text="Descripcion:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
+        <TextBlock Text="Descripcion:"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
         <TextBox x:Name="TxtDescripcion"
                  Grid.Row="1"
                  Grid.Column="1"
                  Margin="0,12,0,0"
                  MaxLength="255"/>
 
-        <TextBlock Text="Precio:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
+        <TextBlock Text="Precio:"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
         <TextBox x:Name="TxtPrecio"
                  Grid.Row="2"
                  Grid.Column="1"
                  Margin="0,12,0,0"
                  MaxLength="10"/>
 
-        <TextBlock Text="Duracion (min):" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
+        <TextBlock Text="Duracion (min):"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
         <TextBox x:Name="TxtDuracion"
                  Grid.Row="3"
                  Grid.Column="1"
@@ -54,6 +84,8 @@
                     Content="Guardar"
                     Width="110"
                     Click="btnGuardar"/>
+
         </StackPanel>
+
     </Grid>
 </Window>

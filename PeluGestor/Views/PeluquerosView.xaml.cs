@@ -17,6 +17,7 @@ namespace PeluGestor.Views
             try
             {
                 CargarPeluquerias();
+                CmbPeluqueria.SelectedValue = 0;
             }
             catch (Exception ex)
             {
@@ -31,6 +32,12 @@ namespace PeluGestor.Views
         private void CargarPeluquerias()
         {
             DataTable dtPelus = PeluqueriasDao.ObtenerTodo();
+
+            DataRow filaTodas = dtPelus.NewRow();
+            filaTodas["Id"] = 0;
+            filaTodas["Nombre"] = "Todas";
+            dtPelus.Rows.InsertAt(filaTodas, 0);
+
             CmbPeluqueria.ItemsSource = dtPelus.DefaultView;
         }
 
@@ -46,13 +53,15 @@ namespace PeluGestor.Views
         {
             int pid = PeluqueriaId();
 
-            if (pid <= 0)
+            if (pid == 0)
             {
-                Grid.ItemsSource = null;
-                return;
+                dt = PeluquerosDao.ObtenerTodos();
+            }
+            else
+            {
+                dt = PeluquerosDao.ObtenerPorPeluqueria(pid);
             }
 
-            dt = PeluquerosDao.ObtenerPorPeluqueria(pid);
             Grid.ItemsSource = dt.DefaultView;
         }
 
@@ -69,9 +78,9 @@ namespace PeluGestor.Views
         private void TxtBuscar_TextChanged(object sender, TextChangedEventArgs e)
         {
             int pid = PeluqueriaId();
-            if (pid <= 0) return;
+            if (pid < 0) return;
 
-            string q = TxtBuscar.Text.Trim().ToString();
+            string q = TxtBuscar.Text.Trim();
 
             if (q == "")
             {
@@ -79,7 +88,15 @@ namespace PeluGestor.Views
                 return;
             }
 
-            dt = PeluquerosDao.Buscar(pid, q);
+            if (pid == 0)
+            {
+                dt = PeluquerosDao.BuscarTodos(q);
+            }
+            else
+            {
+                dt = PeluquerosDao.Buscar(pid, q);
+            }
+
             Grid.ItemsSource = dt.DefaultView;
         }
 

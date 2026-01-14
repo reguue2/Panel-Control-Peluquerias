@@ -12,42 +12,37 @@ namespace PeluGestor.Data
                 SELECT
                     r.Id,
                     r.PeluqueriaId,
-                    p.Nombre AS PeluqueriaNombre,
+                    ISNULL(p.Nombre, 'Peluqueria no existe') AS PeluqueriaNombre,
                     r.ServicioId,
-                    s.Nombre AS ServicioNombre,
+                    ISNULL(s.Nombre, 'Servicio no existe') AS ServicioNombre,
                     r.PeluqueroId,
-                    pe.Nombre AS PeluqueroNombre,
+                    ISNULL(pe.Nombre, 'Sin asignar') AS PeluqueroNombre,
                     r.NombreCliente,
                     r.Telefono,
                     r.Fecha,
                     r.Hora,
                     r.Estado
                 FROM dbo.Reservas r
-                JOIN dbo.Peluquerias p ON p.Id = r.PeluqueriaId
-                JOIN dbo.Servicios s ON s.Id = r.ServicioId
-                JOIN dbo.Peluqueros pe ON pe.Id = r.PeluqueroId
-                WHERE r.PeluqueriaId = @pid
-                  AND (@fecha IS NULL OR r.Fecha = @fecha)
-                  AND (@estado = '' OR r.Estado = @estado)
-                ORDER BY r.Hora;";
+                LEFT JOIN dbo.Peluquerias p ON p.Id = r.PeluqueriaId
+                LEFT JOIN dbo.Servicios s ON s.Id = r.ServicioId
+                LEFT JOIN dbo.Peluqueros pe ON pe.Id = r.PeluqueroId
+                WHERE
+                    (@pid = 0 OR r.PeluqueriaId = @pid)
+                AND (@fecha IS NULL OR r.Fecha = @fecha)
+                AND (@estado = '' OR r.Estado = @estado)
+                ORDER BY r.Fecha, r.Hora;";
 
-            if (fecha == null)
-            {
-                return Db.Consulta(sql,
-                    new SqlParameter("@pid", peluqueriaId),
-                    new SqlParameter("@fecha", DBNull.Value),
-                    new SqlParameter("@estado", estado));
-            }
-            else
-            {
-                return Db.Consulta(sql,
-                    new SqlParameter("@pid", peluqueriaId),
-                    new SqlParameter("@fecha", fecha),
-                    new SqlParameter("@estado", estado));
-            }
+            var pPid = new SqlParameter("@pid", SqlDbType.Int) { Value = peluqueriaId };
+            var pFecha = new SqlParameter("@fecha", SqlDbType.Date) { Value = (object?)fecha ?? DBNull.Value };
+            var pEstado = new SqlParameter("@estado", SqlDbType.NVarChar, 20) { Value = estado ?? "" };
+
+            return Db.Consulta(sql, pPid, pFecha, pEstado);
         }
 
-        public static int Insertar(int peluqueriaId, int servicioId, int peluqueroId, string nombreCliente, string telefono, DateTime fecha, TimeSpan hora)
+
+        public static int Insertar(int peluqueriaId, int servicioId, int peluqueroId,
+                                   string nombreCliente, string telefono,
+                                   DateTime fecha, TimeSpan hora)
         {
             string sql = @"
                 INSERT INTO dbo.Reservas
@@ -65,7 +60,9 @@ namespace PeluGestor.Data
                 new SqlParameter("@hora", hora));
         }
 
-        public static int Update(int id, int servicioId, int peluqueroId, string nombreCliente, string telefono, DateTime fecha, TimeSpan hora)
+        public static int Update(int id, int servicioId, int peluqueroId,
+                                 string nombreCliente, string telefono,
+                                 DateTime fecha, TimeSpan hora)
         {
             string sql = @"
                 UPDATE dbo.Reservas
@@ -87,7 +84,7 @@ namespace PeluGestor.Data
                 new SqlParameter("@hora", hora));
         }
 
-        public static int Delete(int id)
+        public static int Cancelar(int id)
         {
             string sql = @"UPDATE dbo.Reservas SET Estado = 'cancelada' WHERE Id = @id;";
             return Db.EjecutarCRUD(sql, new SqlParameter("@id", id));

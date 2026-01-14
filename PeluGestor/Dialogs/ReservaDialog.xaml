@@ -7,39 +7,107 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
-    <Grid Margin="12"
-          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-          ColumnDefinitions="170,*">
+    <Grid Margin="12">
 
-        <TextBlock Text="Cliente:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-        <TextBox x:Name="TxtCliente" Grid.Row="0" Grid.Column="1"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock Text="Telefono:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
-        <TextBox x:Name="TxtTelefono" Grid.Row="1" Grid.Column="1" Margin="0,12,0,0"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Fecha:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
-        <DatePicker x:Name="DpFecha" Grid.Row="2" Grid.Column="1" Margin="0,12,0,0"/>
+        <TextBlock Text="Cliente:"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"/>
 
-        <TextBlock Text="Hora (HH:MM):" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
-        <TextBox x:Name="TxtHora" Grid.Row="3" Grid.Column="1" Margin="0,12,0,0"/>
+        <TextBox x:Name="TxtCliente"
+                 Grid.Row="0"
+                 Grid.Column="1"/>
 
-        <TextBlock Text="Servicio:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
+        <TextBlock Text="Telefono:"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
+        <TextBox x:Name="TxtTelefono"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="0,12,0,0"/>
+
+        <TextBlock Text="Fecha:"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
+        <DatePicker x:Name="DpFecha"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="0,12,0,0"/>
+
+        <TextBlock Text="Hora (HH:MM):"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
+        <TextBox x:Name="TxtHora"
+                 Grid.Row="3"
+                 Grid.Column="1"
+                 Margin="0,12,0,0"/>
+
+        <TextBlock Text="Servicio:"
+                   Grid.Row="4"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
         <ComboBox x:Name="CmbServicio"
-                  Grid.Row="4" Grid.Column="1"
+                  Grid.Row="4"
+                  Grid.Column="1"
                   Margin="0,12,0,0"
                   DisplayMemberPath="Nombre"
                   SelectedValuePath="Id"/>
 
-        <TextBlock Text="Peluquero:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,12,0,0"/>
+        <TextBlock Text="Peluquero:"
+                   Grid.Row="5"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Margin="0,12,0,0"/>
+
         <ComboBox x:Name="CmbPeluquero"
-                  Grid.Row="5" Grid.Column="1"
+                  Grid.Row="5"
+                  Grid.Column="1"
                   Margin="0,12,0,0"
                   DisplayMemberPath="Nombre"
                   SelectedValuePath="Id"/>
 
-        <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-            <Button Content="Cancelar" Width="110" Margin="0,0,8,0" Click="btnCancelar"/>
-            <Button Content="Guardar" Width="110" Click="btnGuardar"/>
+        <StackPanel Grid.Row="6"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0">
+
+            <Button Content="Cancelar"
+                    Width="110"
+                    Margin="0,0,8,0"
+                    Click="btnCancelar"/>
+
+            <Button Content="Guardar"
+                    Width="110"
+                    Click="btnGuardar"/>
+
         </StackPanel>
+
     </Grid>
 </Window>

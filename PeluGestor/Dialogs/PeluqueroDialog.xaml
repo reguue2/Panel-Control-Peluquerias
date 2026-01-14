@@ -7,9 +7,18 @@
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize">
 
-    <Grid Margin="12"
-          RowDefinitions="Auto,Auto,Auto"
-          ColumnDefinitions="120,*">
+    <Grid Margin="12">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <TextBlock Text="Nombre:"
                    Grid.Row="0"
@@ -49,5 +58,6 @@
                     Width="110"
                     Click="btnGuardar"/>
         </StackPanel>
+
     </Grid>
 </Window>

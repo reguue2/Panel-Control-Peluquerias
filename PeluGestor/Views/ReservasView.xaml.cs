@@ -2,7 +2,6 @@
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Data.SqlClient;
 using PeluGestor.Data;
 using PeluGestor.Dialogs;
 
@@ -15,12 +14,11 @@ namespace PeluGestor.Views
         public ReservasView()
         {
             InitializeComponent();
-
-            try 
+            try
             {
                 CargarPeluquerias();
+                CmbPeluqueria.SelectedValue = 0; 
                 DpFecha.SelectedDate = null;
-                CargarDatos();
             }
             catch (Exception ex)
             {
@@ -35,36 +33,49 @@ namespace PeluGestor.Views
         private void CargarPeluquerias()
         {
             DataTable dtPelus = PeluqueriasDao.ObtenerTodo();
+
+            DataRow filaTodas = dtPelus.NewRow();
+            filaTodas["Id"] = 0;
+            filaTodas["Nombre"] = "Todas";
+            dtPelus.Rows.InsertAt(filaTodas, 0);
+
             CmbPeluqueria.ItemsSource = dtPelus.DefaultView;
         }
 
         private int PeluqueriaId()
         {
             if (CmbPeluqueria.SelectedValue == null)
-                return -1;
+                return 0;
 
             return Convert.ToInt32(CmbPeluqueria.SelectedValue);
         }
 
-        private string Estado()
+        private DateTime? FechaSeleccionada()
         {
-            ComboBoxItem item = CmbEstado.SelectedItem as ComboBoxItem;
-
-            if (item == null) return "";
-
-            string val = item.Content.ToString().Trim();
-            if (val == "Todos")
-                return "";
-            else
-                return val;
+            return DpFecha.SelectedDate;
         }
 
-        private DateTime? Fecha()
+        private string EstadoSeleccionado()
         {
-            if (DpFecha.SelectedDate == null)
-                return null;
+            if (CmbEstado.SelectedItem is ComboBoxItem item)
+            {
+                string txt = item.Content.ToString();
+                if (txt == "Todos") return "";
+                return txt;
+            }
+            return "";
+        }
 
-            return DpFecha.SelectedDate.Value.Date;
+        private void CargarDatos()
+        {
+            if (Grid == null) return;
+
+            int pid = PeluqueriaId();
+            DateTime? fecha = FechaSeleccionada();
+            string estado = EstadoSeleccionado();
+
+            dt = ReservasDao.Filtrar(pid, fecha, estado);
+            Grid.ItemsSource = dt.DefaultView;
         }
 
         private DataRowView FilaSeleccionada()
@@ -72,37 +83,23 @@ namespace PeluGestor.Views
             return Grid.SelectedItem as DataRowView;
         }
 
-        private void CargarDatos()
-        {
-            int pid = PeluqueriaId();
-
-            if (pid <= 0) 
-            {
-                Grid.ItemsSource = null;
-                return;
-            }
-
-            DateTime? fecha = Fecha();
-
-            dt = ReservasDao.Filtrar(pid, fecha, Estado());
-            Grid.ItemsSource = dt.DefaultView;
-        }
-
         private void CmbPeluqueria_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsLoaded) return;
+            CargarDatos();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
             CargarDatos();
         }
 
         private void DpFecha_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsLoaded) return;
             CargarDatos();
         }
 
         private void CmbEstado_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!IsLoaded) return;
             CargarDatos();
         }
 
@@ -110,10 +107,10 @@ namespace PeluGestor.Views
         {
             int pid = PeluqueriaId();
 
-            if (pid <= 0)
+            if (pid == 0)
             {
                 MessageBox.Show(
-                    "Seleccione una peluqueria primero.",
+                    "Seleccione una peluqueria concreta para crear una reserva.",
                     "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -125,7 +122,7 @@ namespace PeluGestor.Views
 
             if (dlg.ShowDialog() == true)
             {
-                int res = ReservasDao.Insertar( 
+                int res = ReservasDao.Insertar(
                     pid,
                     dlg.ServicioId,
                     dlg.PeluqueroId,
@@ -138,12 +135,13 @@ namespace PeluGestor.Views
                 if (res <= 0)
                 {
                     MessageBox.Show(
-                        "No se puede guardar: el peluquero ya tiene una reserva en esa fecha y hora.",
+                        "No se pudo insertar la reserva.",
                         "Error",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                     return;
                 }
+
                 CargarDatos();
             }
         }
@@ -163,16 +161,17 @@ namespace PeluGestor.Views
 
             int id = Convert.ToInt32(row["Id"]);
             int pid = Convert.ToInt32(row["PeluqueriaId"]);
-            int servicioId = Convert.ToInt32(row["ServicioId"]);
-            int peluqueroId = Convert.ToInt32(row["PeluqueroId"]);
-            string cliente = row["NombreCliente"].ToString();
-            string tel = row["Telefono"].ToString();
-            DateTime fecha = Convert.ToDateTime(row["Fecha"]).Date;
-            TimeSpan hora = (TimeSpan)row["Hora"];
 
             ReservaDialog dlg = new ReservaDialog(pid);
             dlg.Owner = Window.GetWindow(this);
-            dlg.CargarParaEditar(cliente, tel, fecha, hora, servicioId, peluqueroId);
+            dlg.CargarParaEditar(
+                row["NombreCliente"].ToString(),
+                row["Telefono"].ToString(),
+                Convert.ToDateTime(row["Fecha"]),
+                (TimeSpan)row["Hora"],
+                Convert.ToInt32(row["ServicioId"]),
+                Convert.ToInt32(row["PeluqueroId"])
+            );
 
             if (dlg.ShowDialog() == true)
             {
@@ -186,10 +185,10 @@ namespace PeluGestor.Views
                     dlg.Hora
                 );
 
-                if (res <= 0) 
+                if (res <= 0)
                 {
                     MessageBox.Show(
-                        "No se puede guardar: el peluquero ya tiene una reserva en esa fecha y hora.",
+                        "No se pudo actualizar la reserva.",
                         "Error",
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
@@ -200,10 +199,9 @@ namespace PeluGestor.Views
             }
         }
 
-        private void btnEliminar(object sender, RoutedEventArgs e)
+        private void btnCancelar(object sender, RoutedEventArgs e)
         {
             DataRowView row = FilaSeleccionada();
-
             if (row == null)
             {
                 MessageBox.Show(
@@ -213,74 +211,41 @@ namespace PeluGestor.Views
                     MessageBoxImage.Warning);
                 return;
             }
-            ;
 
-            int id = Convert.ToInt32(row["Id"]);
-            string estado = row["Estado"].ToString();
-
-            if (estado == "cancelada")
+            if (row["Estado"].ToString() == "cancelada")
             {
                 MessageBox.Show(
                     "La reserva ya esta cancelada.",
-                    "Info",
+                    "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
             }
 
             MessageBoxResult res = MessageBox.Show(
-                "Marcar la reserva como cancelada?",
+                "Desea cancelar esta reserva?",
                 "Confirmacion",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
             if (res != MessageBoxResult.Yes) return;
 
-            int r = ReservasDao.Delete(id);
-
-            if (r <= 0)
-            {
-                MessageBox.Show(
-                    "No se pudo cancelar la reserva.",
-                    "Error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return;
-            }
-
+            ReservasDao.Cancelar(Convert.ToInt32(row["Id"]));
             CargarDatos();
         }
 
         private void QuitarColumnas(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            if (e.PropertyName == "Id" || e.PropertyName == "PeluqueriaId" || e.PropertyName == "ServicioId" || e.PropertyName == "PeluqueroId" || e.PropertyName == "PeluqueriaNombre")
-            {
+            if (e.PropertyName == "Id" || e.PropertyName == "PeluqueriaId" || e.PropertyName == "ServicioId" || e.PropertyName == "PeluqueroId")
                 e.Cancel = true;
-            }
-
-            if (e.PropertyName == "ServicioNombre")
-            {
-                e.Column.Header = "Servicio";
-            }
 
             if (e.PropertyName == "PeluqueroNombre")
             {
-                e.Column.Header = "Peluquero";
-            }
-
-            if (e.PropertyName == "NombreCliente")
-            {
-                e.Column.Header = "Nombre";
-            }
-
-            if (e.PropertyName == "Fecha")
-            {
-                e.Column.Header = "Fecha";
-                if (e.Column is DataGridTextColumn col)
-                {
-                    col.Binding.StringFormat = "dd/MM/yyyy";
-                }
+                var col = e.Column as DataGridTextColumn;
+                if (col != null)
+                    col.Binding.TargetNullValue = "Sin asignar";
             }
         }
+
     }
 }

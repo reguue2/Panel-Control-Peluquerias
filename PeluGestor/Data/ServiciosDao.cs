@@ -6,6 +6,16 @@ namespace PeluGestor.Data
 {
     public static class ServiciosDao
     {
+        public static DataTable ObtenerTodos()
+        {
+            string sql = @"
+                SELECT Id, PeluqueriaId AS [Peluqueria Id], Nombre, Descripcion, Precio, DuracionMin
+                FROM dbo.Servicios
+                ORDER BY PeluqueriaId;";
+
+            return Db.Consulta(sql);
+        }
+
         public static DataTable ObtenerPorPeluqueria(int peluqueriaId)
         {
             string sql = @"
@@ -29,6 +39,17 @@ namespace PeluGestor.Data
             return Db.Consulta(sql,
                 new SqlParameter("@pid", peluqueriaId),
                 new SqlParameter("@q", texto + "%"));
+        }
+
+        public static DataTable BuscarTodos(string texto)
+        {
+            string sql = @"
+                SELECT Id, PeluqueriaId AS [Peluqueria Id], Nombre, Descripcion, Precio, DuracionMin
+                FROM dbo.Servicios
+                WHERE Nombre LIKE @q
+                ORDER BY Nombre;";
+
+            return Db.Consulta(sql, new SqlParameter("@q", texto + "%"));
         }
 
         public static int Insertar(int peluqueriaId, string nombre, string descripcion, decimal precio, int duracionMin)
