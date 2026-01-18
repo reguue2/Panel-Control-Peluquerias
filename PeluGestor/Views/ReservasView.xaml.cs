@@ -17,7 +17,7 @@ namespace PeluGestor.Views
             try
             {
                 CargarPeluquerias();
-                CmbPeluqueria.SelectedValue = 0; 
+                CmbPeluqueria.SelectedValue = 0;
                 DpFecha.SelectedDate = null;
             }
             catch (Exception ex)
@@ -122,6 +122,16 @@ namespace PeluGestor.Views
 
             if (dlg.ShowDialog() == true)
             {
+                if (dlg.Fecha.Date < DateTime.Today)
+                {
+                    MessageBox.Show(
+                        "No se pueden crear reservas en fechas pasadas.",
+                        "Aviso",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
                 int res = ReservasDao.Insertar(
                     pid,
                     dlg.ServicioId,
@@ -159,6 +169,26 @@ namespace PeluGestor.Views
                 return;
             }
 
+            if (row["Estado"].ToString() == "cancelada")
+            {
+                MessageBox.Show(
+                    "No se puede editar una reserva que esta cancelada.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            if (Convert.ToDateTime(row["Fecha"]).Date < DateTime.Today)
+            {
+                MessageBox.Show(
+                    "No se pueden editar reservas de fechas pasadas.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
             int id = Convert.ToInt32(row["Id"]);
             int pid = Convert.ToInt32(row["PeluqueriaId"]);
 
@@ -175,6 +205,16 @@ namespace PeluGestor.Views
 
             if (dlg.ShowDialog() == true)
             {
+                if (dlg.Fecha.Date < DateTime.Today)
+                {
+                    MessageBox.Show(
+                        "No se pueden editar reservas en fechas pasadas.",
+                        "Aviso",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
                 int res = ReservasDao.Update(
                     id,
                     dlg.ServicioId,
@@ -222,6 +262,16 @@ namespace PeluGestor.Views
                 return;
             }
 
+            if (Convert.ToDateTime(row["Fecha"]).Date < DateTime.Today)
+            {
+                MessageBox.Show(
+                    "No se puede cancelar una reserva de una fecha pasada.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
             MessageBoxResult res = MessageBox.Show(
                 "Desea cancelar esta reserva?",
                 "Confirmacion",
@@ -236,16 +286,52 @@ namespace PeluGestor.Views
 
         private void QuitarColumnas(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            if (e.PropertyName == "Id" || e.PropertyName == "PeluqueriaId" || e.PropertyName == "ServicioId" || e.PropertyName == "PeluqueroId")
-                e.Cancel = true;
-
-            if (e.PropertyName == "PeluqueroNombre")
+            if (e.PropertyName == "Id" ||
+                e.PropertyName == "PeluqueriaId" ||
+                e.PropertyName == "ServicioId" ||
+                e.PropertyName == "PeluqueroId")
             {
+                e.Cancel = true;
+            }
+
+            if (e.PropertyName == "Peluqueria")
+                e.Column.Width = 180;
+
+            if (e.PropertyName == "Servicio")
+                e.Column.Width = 160;
+
+            if (e.PropertyName == "Peluquero")
+            {
+                e.Column.Width = 140;
                 var col = e.Column as DataGridTextColumn;
                 if (col != null)
                     col.Binding.TargetNullValue = "Sin asignar";
             }
-        }
 
+            if (e.PropertyName == "Cliente")
+                e.Column.Width = 160;
+
+            if (e.PropertyName == "Telefono")
+                e.Column.Width = 120;
+
+            if (e.PropertyName == "Fecha")
+            {
+                e.Column.Width = 110;
+                var col = e.Column as DataGridTextColumn;
+                if (col != null)
+                    col.Binding.StringFormat = "dd/MM/yyyy";
+            }
+
+            if (e.PropertyName == "Hora")
+            {
+                e.Column.Width = 80;
+                var col = e.Column as DataGridTextColumn;
+                if (col != null)
+                    col.Binding.StringFormat = @"hh\:mm";
+            }
+
+            if (e.PropertyName == "Estado")
+                e.Column.Width = 110;
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace PeluGestor.Data
         public static DataTable ObtenerTodo()
         {
             string sql = @"
-                SELECT Id, Nombre, Direccion, Telefono, Horario, DiasCerrados
+                SELECT Id, Nombre, Direccion, Telefono, Horario, DiasCerrados AS [Dias Cerrados]
                 FROM dbo.Peluquerias
                 ORDER BY Nombre;";
             return Db.Consulta(sql);
@@ -17,7 +17,7 @@ namespace PeluGestor.Data
         public static DataTable BuscarPorNombre(string texto)
         {
             string sql = @"
-                SELECT Id, Nombre, Direccion, Telefono, Horario, DiasCerrados
+                SELECT Id, Nombre, Direccion, Telefono, Horario, DiasCerrados AS [Dias Cerrados]
                 FROM dbo.Peluquerias
                 WHERE Nombre LIKE @q
                 ORDER BY Nombre;";

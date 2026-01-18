@@ -33,7 +33,7 @@ namespace PeluGestor.Dialogs
             {
                 MessageBox.Show(
                     "El nombre es obligatorio.",
-                    "Validacion",
+                    "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
                 );
@@ -47,7 +47,7 @@ namespace PeluGestor.Dialogs
             {
                 MessageBox.Show(
                     "Precio invalido. Usa formato 10.50",
-                    "Validacion",
+                    "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
                 );
@@ -60,7 +60,7 @@ namespace PeluGestor.Dialogs
             {
                 MessageBox.Show(
                     "Duracion invalida. Debe ser mayor que 0.",
-                    "Validacion",
+                    "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
                 );

@@ -233,9 +233,29 @@ namespace PeluGestor.Views
                 e.Cancel = true;
             }
 
-            if (e.PropertyName == "DuracionMin")
+            if (e.PropertyName == "Peluqueria")
+                e.Column.Width = 180;
+
+            if (e.PropertyName == "Nombre")
+                e.Column.Width = 180;
+
+            if (e.PropertyName == "Descripcion")
+                e.Column.Width = 260;
+
+            if (e.PropertyName == "Precio")
             {
-                e.Column.Header = "Duracion";
+                e.Column.Width = 100;
+                var col = e.Column as DataGridTextColumn;
+                if (col != null)
+                    col.Binding.StringFormat = "{0:0.00} €";
+            }
+
+            if (e.PropertyName == "Duracion")
+            {
+                e.Column.Width = 120;
+                var col = e.Column as DataGridTextColumn;
+                if (col != null)
+                    col.Binding.StringFormat = "{0} min";
             }
         }
     }

@@ -32,12 +32,29 @@ namespace PeluGestor.Dialogs
             {
                 MessageBox.Show(
                     "El nombre es obligatorio.",
-                    "Validacion",
+                    "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
                 );
                 TxtNombre.Focus();
                 return;
+            }
+
+            string tel = TxtTelefono.Text.Trim();
+
+            if (tel != "")
+            {
+                if (tel.Length != 9 || !long.TryParse(tel, out _))
+                {
+                    MessageBox.Show(
+                        "El telefono debe tener 9 digitos y contener solo numeros.",
+                        "Aviso",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    TxtTelefono.Focus();
+                    return;
+                }
             }
 
             Nombre = TxtNombre.Text.Trim();

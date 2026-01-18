@@ -29,7 +29,7 @@ namespace PeluGestor.Dialogs
             {
                 MessageBox.Show(
                     "El nombre del peluquero es obligatorio.",
-                    "Validacion",
+                    "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
                 );

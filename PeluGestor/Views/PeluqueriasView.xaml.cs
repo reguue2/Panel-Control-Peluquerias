@@ -65,7 +65,7 @@ namespace PeluGestor.Views
             {
                 MessageBox.Show(
                     "Seleccione una peluqueria para editar.",
-                    "Warning",
+                    "Aviso",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return;
@@ -162,9 +162,29 @@ namespace PeluGestor.Views
                 e.Cancel = true;
             }
 
-            if (e.PropertyName == "DiasCerrados")
+            if (e.PropertyName == "Nombre")
             {
-                e.Column.Header = "Dias cerrados";
+                e.Column.Width = 200; 
+            }
+
+            if (e.PropertyName == "Direccion")
+            {
+                e.Column.Width = 260; 
+            }
+
+            if (e.PropertyName == "Telefono")
+            {
+                e.Column.Width = 120; 
+            }
+
+            if (e.PropertyName == "Horario")
+            {
+                e.Column.Width = 160;
+            }
+
+            if (e.PropertyName == "Dias Cerrados")
+            {
+                e.Column.Width = 160; 
             }
         }
     }

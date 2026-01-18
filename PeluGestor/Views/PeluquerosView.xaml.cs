@@ -216,6 +216,22 @@ namespace PeluGestor.Views
             {
                 e.Cancel = true;
             }
+
+            if (e.PropertyName == "Peluqueria")
+            {
+                e.Column.Width = 200;
+            }
+
+            if (e.PropertyName == "Nombre")
+            {
+                e.Column.Width = 180;
+            }
+
+            if (e.PropertyName == "Activo")
+            {
+                e.Column.Width = 90;
+            }
+
         }
     }
 }

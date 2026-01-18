@@ -71,22 +71,44 @@ namespace PeluGestor.Dialogs
 
             if (cliente == "")
             {
-                MessageBox.Show("Cliente obligatorio.", "Validacion",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    "Cliente obligatorio.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                TxtCliente.Focus();
                 return;
             }
 
             if (tel == "")
             {
-                MessageBox.Show("Telefono obligatorio.", "Validacion",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    "Telefono obligatorio.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                TxtTelefono.Focus();
+                return;
+            }
+
+            if (tel.Length != 9 || !long.TryParse(tel, out _))
+            {
+                MessageBox.Show(
+                    "El telefono debe tener 9 digitos y contener solo numeros.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                TxtTelefono.Focus();
                 return;
             }
 
             if (DpFecha.SelectedDate == null)
             {
-                MessageBox.Show("Fecha obligatoria.", "Validacion",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    "Fecha obligatoria.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 
@@ -99,22 +121,32 @@ namespace PeluGestor.Dialogs
                 CultureInfo.InvariantCulture,
                 out hora))
             {
-                MessageBox.Show("Hora invalida. Formato HH:MM (ej 10:30).",
-                    "Validacion", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    "Hora invalida. Formato HH:MM (ej 10:30).",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                TxtHora.Focus();
                 return;
             }
 
             if (CmbServicio.SelectedValue == null)
             {
-                MessageBox.Show("Selecciona un servicio.", "Validacion",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    "Selecciona un servicio.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 
             if (CmbPeluquero.SelectedValue == null)
             {
-                MessageBox.Show("Selecciona un peluquero.", "Validacion",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    "Selecciona un peluquero.",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 
