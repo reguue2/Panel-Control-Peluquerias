@@ -100,10 +100,12 @@
 
             <Button Content="Cancelar"
                     Width="110"
+                    IsCancel="True"
                     Margin="0,0,8,0"
                     Click="btnCancelar"/>
 
             <Button Content="Guardar"
+                    IsDefault="True"
                     Width="110"
                     Click="btnGuardar"/>
 

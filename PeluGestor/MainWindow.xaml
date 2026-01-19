@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:PeluGestor.Views"
-        Title="PeluGestor"
+        Title="Gestoría de Peluquerías - Integrow"
+        Icon="/Recursos/icono.ico"
         Height="720"
         Width="1200"
         MinHeight="600"  
@@ -13,14 +14,56 @@
 
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Archivo">
-                <MenuItem Header="_Salir" Click="Salir_Click"/>
+
+                <MenuItem Header="_Salir"
+                    Click="Salir_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Recursos/salir.png"
+                           Width="16"
+                           Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
             </MenuItem>
 
             <MenuItem Header="_Gestion">
-                <MenuItem Header="Peluquerias" Click="Peluquerias_Click"/>
-                <MenuItem Header="Peluqueros" Click="Peluqueros_Click"/>
-                <MenuItem Header="Servicios" Click="Servicios_Click"/>
-                <MenuItem Header="Reservas" Click="Reservas_Click"/>
+
+                <MenuItem Header="Peluquerias"
+                    Click="Peluquerias_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Recursos/tijera.png"
+                   Width="16"
+                   Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Peluqueros"
+              Click="Peluqueros_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Recursos/peluquero.png"
+                   Width="16"
+                   Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Servicios"
+              Click="Servicios_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Recursos/servicio.png"
+                   Width="16"
+                   Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Reservas"
+              Click="Reservas_Click">
+                    <MenuItem.Icon>
+                        <Image Source="/Recursos/reserva.png"
+                   Width="16"
+                   Height="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
             </MenuItem>
 
             <MenuItem Header="_Ayuda">
@@ -30,5 +73,6 @@
 
         <ContentControl x:Name="MainContent"
                         Margin="8"/>
+        
     </DockPanel>
 </Window>

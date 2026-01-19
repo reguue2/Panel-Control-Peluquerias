@@ -49,12 +49,14 @@
 
             <Button x:Name="BtnCancelar"
                     Content="Cancelar"
+                    IsCancel="True"
                     Width="110"
                     Margin="0,0,8,0"
                     Click="btnCancelar"/>
 
             <Button x:Name="BtnGuardar"
                     Content="Guardar"
+                    IsDefault="True"
                     Width="110"
                     Click="btnGuardar"/>
         </StackPanel>

@@ -13,7 +13,7 @@ namespace PeluGestor
         public async Task MostrarAsync()
         {
             Show();
-            await Task.Delay(2000);
+            await Task.Delay(500);
             Close();
         }
     }

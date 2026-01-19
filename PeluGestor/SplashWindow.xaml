@@ -4,37 +4,33 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Width="420"
-        Height="260"
-        Background="#2B2B2B"
+        Width="1200"
+        Height="720"
+        Background="#1c1e45"
         AllowsTransparency="True">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 
-            <TextBlock Text="PeluGestor"
-                       FontSize="34"
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
+        <Image Source="/Recursos/Logo Integrow.jpg"
+               Width="689"
+               Stretch="Uniform"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center" Height="390"/>
 
-            <TextBlock Text="Gestion de peluquerias"
-                       FontSize="14"
-                       Margin="0,8,0,0"
-                       Foreground="#CCCCCC"
-                       HorizontalAlignment="Center"/>
+        <StackPanel VerticalAlignment="Bottom"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,120">
 
-            <ProgressBar Width="220"
-                         Height="10"
-                         Margin="0,25,0,0"
+            <ProgressBar Width="320"
+                         Height="12"
                          IsIndeterminate="True"/>
 
             <TextBlock Text="Cargando aplicacion..."
-                       FontSize="12"
-                       Margin="0,12,0,0"
-                       Foreground="#AAAAAA"
+                       FontSize="13"
+                       Margin="0,14,0,0"
+                       Foreground="#CCCCCC"
                        HorizontalAlignment="Center"/>
-
         </StackPanel>
+
     </Grid>
 </Window>
